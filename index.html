@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>शुभ विवाह निमंत्रण | कृष्णा संग आशीष</title>
+  <meta name="description" content="कृष्णा एवं आशीष के शुभ विवाह का मांगलिक निमंत्रण पत्र। शुक्रवार, 20 नवम्बर 2026, कोटा (राजस्थान)।">
+  
+  <!-- गूगल फ़ॉन्ट्स (Devanagari Fonts: Yatra One, Rozha One, Noto Sans Devanagari) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
+  
+  <!-- मुख्य स्टाइलशीट -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =====================================================================
+       १. पर्दा खोलने का कवर (Curtain Opening Overlay)
+       ===================================================================== -->
+  <div id="curtainOverlay" aria-modal="true" role="dialog">
+    <!-- बायाँ पर्दा -->
+    <div class="curtain-panel curtain-left" id="curtainLeft"></div>
+    
+    <!-- दायाँ पर्दा -->
+    <div class="curtain-panel curtain-right" id="curtainRight"></div>
+
+    <!-- केंद्र में निमंत्रण कार्ड -->
+    <div class="curtain-center-card" id="curtainCard">
+      <p class="curtain-shloka" id="curtainShloka">॥ श्री गणेशाय नमः ॥</p>
+      
+      <div class="curtain-ganesha-box">
+        <img src="assets/gold_ganesha.png" alt="भगवान श्री गणेश" loading="eager">
+      </div>
+
+      <span class="curtain-badge">मांगलिक निमंत्रण</span>
+      <h1 class="curtain-title">शुभ विवाह निमंत्रण</h1>
+      <p class="curtain-couple" id="curtainCoupleName">कृष्णा संग आशीष</p>
+      <p class="curtain-date" id="curtainDate">शुक्रवार, 20 नवम्बर 2026</p>
+
+      <button id="openCurtainBtn" class="btn-curtain-open" type="button" aria-label="निमंत्रण खोलें">
+        <span>निमंत्रण खोलें</span>
+        <span aria-hidden="true">💌</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- पंखुड़ी वर्षा कंटेनर -->
+  <div id="petalsContainer" aria-hidden="true"></div>
+
+  <!-- =====================================================================
+       २. फ्लोटिंग नियंत्रण (संगीत एवं शॉर्टकट)
+       ===================================================================== -->
+  <div class="floating-controls">
+    <button id="musicToggleBtn" class="floating-btn" type="button" title="पारंपरिक संगीत चालू/बंद करें">
+      <span id="musicIcon" aria-hidden="true">🎵</span>
+      <span id="musicStatusText">संगीत: चालू करें</span>
+    </button>
+    <a href="#guestToolSection" class="floating-btn" title="अतिथि लिंक बनाएँ">
+      <span aria-hidden="true">🔗</span>
+      <span>लिंक बनाएँ</span>
+    </a>
+  </div>
+
+  <!-- =====================================================================
+       ३. मुख्य वेबसाइट सामग्री (Main Content)
+       ===================================================================== -->
+  <main id="mainPageContent">
+
+    <!-- ३.१ स्वागत पृष्ठ (Welcome & Hero Section) -->
+    <section id="welcomeSection" class="welcome-section">
+      <div class="container">
+        
+        <!-- गणेश जी एवं श्लोक -->
+        <div class="shloka-banner">
+          <img src="assets/ganesha_line_clean.png" alt="श्री गणेश" class="ganesha-hero-img">
+          <p class="shloka-main" id="heroGaneshShloka">॥ श्री गणेशाय नमः ॥</p>
+          <p class="shloka-sub" id="heroVakratundaShloka">वक्रतुण्ड महाकाय, सूर्यकोटि समप्रभः।
+निर्विघ्नं कुरु मे देव, सर्व कार्येषु सर्वदा॥</p>
+        </div>
+
+        <!-- व्यक्तिगत अतिथि स्वागत बॉक्स (यदि URL में नाम हो तो) -->
+        <div id="personalizedGuestBadge" class="guest-welcome-card" style="display: none;">
+          <div class="guest-salutation">🌸 सस्नेह निमंत्रण 🌸</div>
+          <div class="guest-name-highlight" id="personalizedGuestName">अतिथि परिवार</div>
+          <p class="guest-note">आप सभी सपरिवार हमारे इस पावन मांगलिक उत्सव में सादर आमंत्रित हैं।</p>
+        </div>
+
+        <!-- मंगल परिणय लोगो -->
+        <img src="assets/mangal_parinay_clean.png" alt="मंगल परिणय" class="mangal-parinay-logo">
+
+        <!-- दूल्हा-दुल्हन के नाम -->
+        <div class="couple-names-wrapper">
+          <span class="couple-single-name" id="brideDisplayName">कृष्णा</span>
+          <span class="couple-connector">संग</span>
+          <span class="couple-single-name" id="groomDisplayName">आशीष</span>
+        </div>
+
+        <div class="divider">
+          <span class="divider-icon">❦</span>
+        </div>
+
+        <!-- पारिवारिक स्वागत संदेश -->
+        <p class="family-blessing-text" id="familyWelcomeMsg">
+          परमपिता परमेश्वर की असीम अनुकम्पा से हमारे परिवार के इस मांगलिक अवसर पर आप सभी सपरिवार सादर आमंत्रित हैं। आपकी गरिमामयी उपस्थिति नव-दम्पति को शुभाशीर्वाद प्रदान कर हमें अनुगृहीत करेगी।
+        </p>
+
+        <!-- पक्ष परिचय (Parents Info) -->
+        <div class="parents-grid">
+          <!-- कन्या पक्ष -->
+          <div class="parent-card">
+            <span class="parent-side-tag" id="brideSideTag">कन्या पक्ष</span>
+            <h2 class="parent-person-name" id="brideFullName">आयुष्मती कृष्णा सेन</h2>
+            <div class="parent-details">
+              <p><strong id="brideRelationLabel">सुपुत्री:</strong> <span id="brideParents">श्री श्याम सेन - श्रीमती नीतू सेन</span></p>
+              <p><strong>सुपोत्री:</strong> <span id="brideGrandParents">स्व. श्री गजानन्द जी सेन - स्व. श्रीमती सीता बाई</span></p>
+              <p style="margin-top: 4px; font-size: 0.82rem; color: var(--text-muted);" id="brideAddress">बी - 40, श्रीनाथ रेजीडेन्सी, रायपुरा, कोटा</p>
+            </div>
+          </div>
+
+          <!-- वर पक्ष -->
+          <div class="parent-card">
+            <span class="parent-side-tag" id="groomSideTag">वर पक्ष</span>
+            <h2 class="parent-person-name" id="groomFullName">आयुष्मान आशीष सेन (बिद्द्)</h2>
+            <div class="parent-details">
+              <p><strong id="groomRelationLabel">सुपुत्र:</strong> <span id="groomParents">स्व. श्री सुरेश जी सेन - श्रीमती इंद्रा बाई</span></p>
+              <p><strong>सुपौत्र:</strong> <span id="groomGrandParents">स्व. श्री मोहनलाल जी सेन - स्व. श्रीमती गंगा बाई</span></p>
+              <p style="margin-top: 4px; font-size: 0.82rem; color: var(--text-muted);" id="groomAddress">सकतपुरा, कुन्हाड़ी, कोटा (राज.)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- सीटीए बटन -->
+        <div style="margin-top: 24px;">
+          <a href="#eventsSection" class="hero-cta-btn">
+            <span>विवाह समारोह देखें</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         ४. विवाह की तारीख और लाइव काउंटडाउन (Countdown Section)
+         ===================================================================== -->
+    <section id="countdownSection" class="countdown-section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">मांगलिक शुभ मुहूर्त</span>
+          <h2 class="wedding-date-highlight" id="countdownDateTitle">शुक्रवार, 20 नवम्बर 2026</h2>
+          <p class="countdown-lead" id="countdownLeadText">शुभ विवाह में अभी इतना समय शेष है</p>
+        </div>
+
+        <!-- 4-ग्रिड लाइव काउंटडाउन -->
+        <div class="countdown-grid" id="timerGrid">
+          <div class="countdown-card">
+            <span class="countdown-num" id="cdDays">00</span>
+            <span class="countdown-label">दिन</span>
+          </div>
+          <div class="countdown-card">
+            <span class="countdown-num" id="cdHours">00</span>
+            <span class="countdown-label">घंटे</span>
+          </div>
+          <div class="countdown-card">
+            <span class="countdown-num" id="cdMinutes">00</span>
+            <span class="countdown-label">मिनट</span>
+          </div>
+          <div class="countdown-card">
+            <span class="countdown-num" id="cdSeconds">00</span>
+            <span class="countdown-label">सेकंड</span>
+          </div>
+        </div>
+
+        <!-- तिथि बीत जाने पर संदेश -->
+        <div id="countdownExpiredMessage" class="countdown-completed-msg">
+          🌸 शुभ विवाह सकुशल सम्पन्न हुआ। आप सभी के स्नेह और शुभाशीर्वाद के लिए हार्दिक आभार! 🌸
+        </div>
+
+        <!-- कैलेंडर में जोड़ें बटन -->
+        <div style="margin-top: 10px;">
+          <button id="addToCalendarBtn" class="btn-calendar-add" type="button">
+            <span aria-hidden="true">📅</span>
+            <span>कैलेंडर में तारीख जोड़ें (Google Calendar)</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         ५. शादी के कार्ड से कार्यक्रम (Events / Schedule Section)
+         ===================================================================== -->
+    <section id="eventsSection" class="events-section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">मांगलिक बेला</span>
+          <h2 class="section-title">शगुन के मधुर पल (विवाह कार्यक्रम)</h2>
+          <div class="divider">
+            <span class="divider-icon">❦</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">शादी के कार्ड अनुसार सभी मांगलिक रस्में एवं समय सारणी</p>
+        </div>
+
+        <!-- डायनामिक कार्यक्रम सूची -->
+        <div class="events-timeline" id="eventsTimelineContainer">
+          <!-- जावास्क्रिप्ट द्वारा कार्ड से लोड होगा -->
+        </div>
+
+        <!-- बारात/पालकी सजावटी बैनर -->
+        <div class="palki-banner">
+          <img src="assets/palki_clean.png" alt="विवाह बारात शोभायात्रा" loading="lazy">
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         ६. रात्रिभोज (Dinner Section)
+         ===================================================================== -->
+    <section id="dinnerSection" class="dinner-section">
+      <div class="container">
+        
+        <div class="dinner-card">
+          
+          <div class="dinner-elephants-wrap">
+            <img src="assets/elephant_right_clean.png" alt="हस्ती" class="dinner-elephant-img" style="transform: scaleX(-1);">
+            <span class="dinner-badge">सप्रेम आमंत्रित</span>
+            <img src="assets/elephant_right_clean.png" alt="हस्ती" class="dinner-elephant-img">
+          </div>
+
+          <h2 class="dinner-heading" id="dinnerTitle">रात्रिभोज</h2>
+          <p style="font-family: var(--font-shloka); color: var(--gold-rich); font-size: 1.15rem; margin-bottom: 8px;">
+            ॥ प्रीतिभोज ॥
+          </p>
+
+          <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 480px; margin: 0 auto;">
+            आप सभी सपरिवार इस स्नेह भोज में पधारकर हमें अनुगृहीत करें।
+          </p>
+
+          <div class="dinner-time-box">
+            <span class="dinner-time-highlight" id="dinnerTimeText">सायं 5:00 बजे से</span>
+            <span class="dinner-date-text" id="dinnerDateText">शुक्रवार, 20 नवम्बर 2026</span>
+          </div>
+
+          <div class="dinner-venue-lead" id="dinnerVenueName">मीरा बाई सामुदायिक भवन</div>
+          <div class="dinner-address-text" id="dinnerVenueAddress">नया नोहरा रोड़, बोरखेड़ा, कोटा (राज.)</div>
+
+          <p class="dinner-warm-welcome">"अतिथि देवो भव:" — आपके आगमन की प्रतीक्षा में।</p>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         ७. कार्यक्रम स्थल व गूगल मैप्स (Venue & Maps Section)
+         ===================================================================== -->
+    <section id="venueSection" class="venue-section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">स्थल दर्शन</span>
+          <h2 class="section-title">कार्यक्रम स्थल का मार्ग</h2>
+          <div class="divider">
+            <span class="divider-icon">📍</span>
+          </div>
+        </div>
+
+        <div class="venue-card">
+          <h3 class="venue-name" id="mainVenueName">मीरा बाई सामुदायिक भवन</h3>
+          <p class="venue-address" id="mainVenueAddress">नया नोहरा रोड़, बोरखेड़ा, कोटा (राजस्थान)</p>
+
+          <!-- गूगल मैप्स एम्बेड -->
+          <div class="map-wrapper">
+            <iframe 
+              id="googleMapIframe"
+              title="मीरा बाई सामुदायिक भवन का नक्शा" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3611.892404097435!2d75.89736637538012!3d25.139366377749845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396f851000000001%3A0x7d6a524e93bb3!2sBorkhera%2C%20Kota%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+
+          <!-- मैप्स लिंक बटन (गूगल मैप्स एप्प या ब्राउज़र में खुलेगा) -->
+          <div>
+            <a 
+              id="googleMapsDirectionsBtn" 
+              href="https://maps.app.goo.gl/TqL9FSjMvaf4qETZ8" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-maps-action">
+              <span aria-hidden="true">🗺️</span>
+              <span>कार्यक्रम स्थल का रास्ता देखें</span>
+            </a>
+          </div>
+
+          <!-- बारात की सूचना (कार्ड अनुसार) -->
+          <div class="baraat-notice-box" id="baraatNoticeText">
+            <strong>विशेष सूचना:</strong> बारात ब्याईजी सा.स्व.श्री सुरेश जी सेन सकतपुरा, गेट नं.2, कोटा वालो के यहाँ से मीरा बाई सामुदायिक भवन, नया नोहरा रोड़, कोटा आवेगी।
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         ८. अतिथि निमंत्रण लिंक जनरेटर (Guest Link Personalization Tool)
+         ===================================================================== -->
+    <section id="guestToolSection" class="guest-tool-section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">सुविधा</span>
+          <h2 class="section-title">अतिथि के नाम का निमंत्रण लिंक बनाएँ</h2>
+          <div class="divider">
+            <span class="divider-icon">💌</span>
+          </div>
+        </div>
+
+        <div class="guest-tool-card">
+          <p class="tool-instructions">
+            यहाँ अपने रिश्तेदार, मित्र या परिवार का नाम लिखें। "निमंत्रण लिंक बनाएँ" पर क्लिक करके लिंक कॉपी करें और उन्हें WhatsApp या संदेश द्वारा भेजें। जब वे लिंक खोलेंगे, तो वेबसाइट पर उनका नाम सप्रेम दिखाई देगा।
+          </p>
+
+          <div class="guest-input-group">
+            <input 
+              type="text" 
+              id="guestInputBox" 
+              class="guest-name-input" 
+              placeholder="अतिथि का नाम लिखें (उदा. बनदानी परिवार / शर्मा परिवार / प्रिय मित्र)" 
+              aria-label="अतिथि का नाम लिखें">
+            
+            <button id="generateLinkBtn" class="btn-generate-link" type="button">
+              निमंत्रण लिंक बनाएँ
+            </button>
+          </div>
+
+          <!-- उत्पन्न लिंक एवं शेयर विकल्प -->
+          <div id="generatedLinkContainer" class="generated-link-box">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600;">
+              तैयार किया गया व्यक्तिगत निमंत्रण लिंक:
+            </p>
+            <div id="generatedUrlText" class="generated-url-text"></div>
+            
+            <div class="link-actions-row">
+              <button id="copyLinkBtn" class="btn-copy-link" type="button">
+                <span aria-hidden="true">📋</span>
+                <span id="copyBtnLabel">लिंक कॉपी करें</span>
+              </button>
+              
+              <a id="shareWhatsAppBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-share">
+                <span aria-hidden="true">💬</span>
+                <span>WhatsApp पर भेजें</span>
+              </a>
+            </div>
+
+            <div id="copySuccessToast" class="copy-success-toast">
+              ✓ निमंत्रण लिंक सफलतापूर्वक कॉपी हो गया है! अब इसे WhatsApp पर भेज सकते हैं।
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         ९. परिवार, निवेदक एवं बाल मनुहार (Family & Blessings Section)
+         ===================================================================== -->
+    <section id="familySection" class="family-section">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-subtitle">आशीर्वाद एवं निवेदक</span>
+          <h2 class="section-title">स्नेहिल स्वजन</h2>
+          <div class="divider">
+            <span class="divider-icon">❦</span>
+          </div>
+        </div>
+
+        <!-- बाल मनुहार विशेष कार्ड -->
+        <div class="bal-manuhar-card">
+          <span class="bal-manuhar-tag">बाल मनुहार</span>
+          <p class="bal-manuhar-poem" id="balManuharPoem">
+            "हल्दी हैं चन्दन है, रिश्तों का बंधन है,<br>
+            हमारी दीदी की शादी में आपका हार्दिक अभिनन्दन है..."
+          </p>
+        </div>
+
+        <!-- परिवार व स्नेही सूची -->
+        <div class="family-grid">
+          
+          <!-- विनीत -->
+          <div class="family-card">
+            <h3 class="family-card-title">विनीत</h3>
+            <ul class="family-names-list" id="vineetList">
+              <!-- JS द्वारा भरा जाएगा -->
+            </ul>
+          </div>
+
+          <!-- स्वागतातुर -->
+          <div class="family-card">
+            <h3 class="family-card-title">स्वागतातुर</h3>
+            <ul class="family-names-list" id="swagataturList">
+              <!-- JS द्वारा भरा जाएगा -->
+            </ul>
+          </div>
+
+          <!-- विशेष आग्रह -->
+          <div class="family-card">
+            <h3 class="family-card-title">विशेष आग्रह</h3>
+            <ul class="family-names-list" id="visheshAagrahList">
+              <!-- JS द्वारा भरा जाएगा -->
+            </ul>
+          </div>
+
+          <!-- स्नेहाकांक्षी -->
+          <div class="family-card">
+            <h3 class="family-card-title">स्नेहाकांक्षी</h3>
+            <div class="snehakankshi-tags" id="snehakankshiTags">
+              <!-- JS द्वारा भरा जाएगा -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ननिहाल पक्ष -->
+        <div style="background: #FFFFFF; border: 1px solid var(--gold-border); border-radius: var(--radius-md); padding: 18px 22px; max-width: 760px; margin: 0 auto; text-align: left; box-shadow: var(--shadow-sm);">
+          <h3 style="font-family: var(--font-heading); color: var(--maroon-primary); font-size: 1.15rem; margin-bottom: 6px;">
+            ननिहाल पक्ष
+          </h3>
+          <p id="nanihalText" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+            रामप्रसाद जी - द्रोपदी बाई, स्व. बद्रीलाल जी - शान्ति बाई, बालकिशन जी - फूलन्ता बाई, सत्यनारायण जी - मनीषा, दिलीप - अर्चना, कमल, श्रवण, लक्की (खेहली काकूनिया वाले)
+          </p>
+        </div>
+
+        <!-- सात फेरे चित्र -->
+        <div class="phere-illustration-wrap">
+          <img src="assets/phere_clean.png" alt="पाणिग्रहण संस्कार सात फेरे" loading="lazy">
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================================
+       १०. पादलेख (Footer)
+       ===================================================================== -->
+  <footer>
+    <div class="container">
+      <p class="footer-couple-name" id="footerCoupleName">कृष्णा संग आशीष</p>
+      <p class="footer-text">॥ मंगल परिणयोत्सव • शुक्रवार, 20 नवम्बर 2026 ॥</p>
+      
+      <div class="footer-contact">
+        <span>संपर्क सूत्र:</span>
+        <span id="footerPhones">
+          <!-- JS द्वारा भरा जाएगा -->
+        </span>
+      </div>
+
+      <div class="footer-bottom-line">
+        सप्रेम निमंत्रण • सपरिवार पधारकर नव युगल को शुभाशीर्वाद प्रदान करें
+      </div>
+    </div>
+  </footer>
+
+  <!-- स्क्रिप्ट फ़ाइलें -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

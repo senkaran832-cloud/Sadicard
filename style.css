@@ -1,0 +1,1323 @@
+/* ==========================================================================
+   शुभ विवाह निमंत्रण - मुख्य स्टाइलशीट (Vanilla CSS)
+   थीम: सात्विक, सुंदर, हल्का क्रीम/आइवरी, भारतीय पारंपरिक कला
+   ========================================================================== */
+
+:root {
+  /* कलर पैलेट - हल्का क्रीम व पारंपरिक मांगलिक रंग */
+  --bg-cream: #FAF7F2;
+  --bg-ivory: #FFFDF9;
+  --bg-card: #FFFFFF;
+  --bg-cream-soft: #F5EFEB;
+  
+  --maroon-primary: #851329;
+  --maroon-dark: #540816;
+  --maroon-light: #9E1C36;
+  --maroon-soft-tint: #FDF4F5;
+
+  --gold-primary: #B8860B;
+  --gold-rich: #C99718;
+  --gold-light: #F3E5AB;
+  --gold-border: #DFC27D;
+  --gold-glow: rgba(201, 151, 24, 0.25);
+
+  --text-dark: #2B2321;
+  --text-secondary: #5C4F4B;
+  --text-muted: #827570;
+
+  --shadow-sm: 0 2px 8px rgba(84, 8, 22, 0.05);
+  --shadow-md: 0 6px 20px rgba(84, 8, 22, 0.08);
+  --shadow-lg: 0 12px 32px rgba(84, 8, 22, 0.12);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  --font-heading: 'Yatra One', 'Rozha One', serif;
+  --font-body: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-shloka: 'Rozha One', 'Noto Sans Devanagari', serif;
+}
+
+/* बॉक्स मॉडल एवं बेसिक रिसेट */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--bg-cream);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background-color: var(--bg-cream);
+  line-height: 1.65;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* फूलों की हल्की पृष्ठभूमि वाटरमार्क */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(184, 134, 11, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(133, 19, 41, 0.03) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ==========================================================================
+   १. पर्दा खोलने का एनीमेशन (Curtain Opening Mechanism)
+   ========================================================================== */
+
+#curtainOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: visibility 0.4s ease 1.4s;
+}
+
+#curtainOverlay.opened {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* बायाँ एवं दायाँ पर्दा */
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50vw;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(201, 151, 24, 0.12) 0%, transparent 70%),
+    linear-gradient(135deg, #7A1125 0%, #540816 60%, #400510 100%);
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.4);
+  transition: transform 1.35s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+  z-index: 10;
+}
+
+.curtain-left {
+  left: 0;
+  border-right: 4px solid var(--gold-border);
+  box-shadow: 6px 0 25px rgba(0, 0, 0, 0.4);
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 4px solid var(--gold-border);
+  box-shadow: -6px 0 25px rgba(0, 0, 0, 0.4);
+}
+
+/* पर्दे पर सोने की झालर (Golden Trim Border) */
+.curtain-left::after, .curtain-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #DFC27D 0px,
+    #B8860B 8px,
+    #996515 16px,
+    #DFC27D 24px
+  );
+  opacity: 0.9;
+}
+
+.curtain-left::after { right: 0; }
+.curtain-right::after { left: 0; }
+
+/* पर्दे के खुलने पर स्लाइड क्लास */
+#curtainOverlay.opened .curtain-left {
+  transform: translateX(-100%);
+}
+
+#curtainOverlay.opened .curtain-right {
+  transform: translateX(100%);
+}
+
+/* केंद्र में निमंत्रण कार्ड */
+.curtain-center-card {
+  position: relative;
+  z-index: 20;
+  max-width: 440px;
+  width: 90%;
+  background: #FFFDF9;
+  border: 3px double var(--gold-rich);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--gold-glow);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+#curtainOverlay.opened .curtain-center-card {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+.curtain-shloka {
+  font-family: var(--font-shloka);
+  color: var(--maroon-primary);
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.curtain-ganesha-box {
+  width: 95px;
+  height: 95px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--maroon-soft-tint);
+  border: 2px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.curtain-ganesha-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.curtain-badge {
+  display: inline-block;
+  background: var(--maroon-soft-tint);
+  color: var(--maroon-primary);
+  border: 1px solid rgba(133, 19, 41, 0.2);
+  padding: 4px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.curtain-title {
+  font-family: var(--font-heading);
+  color: var(--maroon-dark);
+  font-size: 1.9rem;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.curtain-couple {
+  font-family: var(--font-heading);
+  color: var(--gold-primary);
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+.curtain-date {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* निमंत्रण खोलें बटन */
+.btn-curtain-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #9E1C36 0%, #7A1125 100%);
+  color: #FFFDF9;
+  border: 1px solid var(--gold-border);
+  padding: 13px 32px;
+  font-size: 1.05rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(133, 19, 41, 0.35);
+  transition: all 0.25s ease;
+  width: 100%;
+  max-width: 280px;
+}
+
+.btn-curtain-open:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(133, 19, 41, 0.45);
+  background: linear-gradient(135deg, #B02340 0%, #851329 100%);
+}
+
+.btn-curtain-open:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   २. फ्लोटिंग नियंत्रण (Music & Share Shortcuts)
+   ========================================================================== */
+
+.floating-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.floating-btn {
+  background: #FFFDF9;
+  color: var(--maroon-primary);
+  border: 1.5px solid var(--gold-border);
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.floating-btn:hover {
+  transform: translateY(-2px);
+  background: var(--maroon-primary);
+  color: #FFFDF9;
+  border-color: var(--maroon-primary);
+}
+
+/* ==========================================================================
+   ३. सामान्य लेआउट, कंटेनर एवं हेडर
+   ========================================================================== */
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+section {
+  padding: 48px 0;
+  position: relative;
+}
+
+/* सुंदर सजावटी बॉर्डर डिवाइडर */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 24px auto;
+  color: var(--gold-rich);
+}
+
+.divider::before, .divider::after {
+  content: "";
+  height: 1px;
+  width: 60px;
+  background: linear-gradient(to right, transparent, var(--gold-border), transparent);
+}
+
+.divider-icon {
+  font-size: 1.1rem;
+}
+
+/* अनुभाग शीर्षक (Section Titles) */
+.section-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.section-subtitle {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold-primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  color: var(--maroon-primary);
+  font-size: 2rem;
+  line-height: 1.3;
+}
+
+@media (max-width: 600px) {
+  .section-title { font-size: 1.7rem; }
+  section { padding: 36px 0; }
+}
+
+/* ==========================================================================
+   ४. स्वागत पृष्ठ (Hero & Welcome Section)
+   ========================================================================== */
+
+.welcome-section {
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+
+.shloka-banner {
+  background: var(--maroon-soft-tint);
+  border: 1px solid rgba(133, 19, 41, 0.15);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  max-width: 620px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+.ganesha-hero-img {
+  width: 65px;
+  height: auto;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+.shloka-main {
+  font-family: var(--font-shloka);
+  color: var(--maroon-dark);
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.shloka-sub {
+  font-family: var(--font-shloka);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  white-space: pre-line;
+}
+
+/* अतिथि का व्यक्तिगत स्वागत कार्ड (Personalized Guest Badge) */
+.guest-welcome-card {
+  background: #FFFFFF;
+  border: 2px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 18px 24px;
+  max-width: 580px;
+  margin: 0 auto 30px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.guest-salutation {
+  font-size: 0.9rem;
+  color: var(--maroon-primary);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.guest-name-highlight {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--maroon-dark);
+  line-height: 1.3;
+}
+
+.guest-note {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+/* मुख्य शीर्षक व नवयुगल */
+.mangal-parinay-logo {
+  max-width: 250px;
+  width: 70%;
+  height: auto;
+  margin: 0 auto 16px;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(133, 19, 41, 0.15));
+}
+
+.couple-names-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.couple-single-name {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: var(--maroon-primary);
+  line-height: 1.1;
+}
+
+.couple-connector {
+  font-family: var(--font-shloka);
+  font-size: 1.3rem;
+  color: var(--gold-rich);
+  padding: 0 6px;
+}
+
+@media (max-width: 600px) {
+  .couple-single-name { font-size: 2rem; }
+  .couple-connector { font-size: 1.1rem; }
+}
+
+.family-blessing-text {
+  max-width: 660px;
+  margin: 0 auto 28px;
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+/* पक्ष परिचय कार्ड (Bride & Groom Parents Box) */
+.parents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  max-width: 720px;
+  margin: 0 auto 30px;
+  text-align: left;
+}
+
+.parent-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.parent-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--maroon-primary);
+}
+
+.parent-side-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.parent-person-name {
+  font-family: var(--font-heading);
+  color: var(--maroon-dark);
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.parent-details {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--maroon-primary);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s ease;
+}
+
+.hero-cta-btn:hover {
+  background: var(--maroon-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+   ५. लाइव काउंटडाउन (Live Countdown Section)
+   ========================================================================== */
+
+.countdown-section {
+  background: var(--bg-ivory);
+  border-top: 1px solid rgba(184, 134, 11, 0.15);
+  border-bottom: 1px solid rgba(184, 134, 11, 0.15);
+  text-align: center;
+}
+
+.wedding-date-highlight {
+  font-family: var(--font-heading);
+  color: var(--maroon-primary);
+  font-size: 1.7rem;
+  margin-bottom: 8px;
+}
+
+.countdown-lead {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto 28px;
+}
+
+.countdown-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 14px 8px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.countdown-card:hover {
+  transform: translateY(-2px);
+}
+
+.countdown-num {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--maroon-primary);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.countdown-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .countdown-grid { gap: 8px; }
+  .countdown-num { font-size: 1.6rem; }
+  .countdown-label { font-size: 0.75rem; }
+}
+
+.countdown-completed-msg {
+  display: none;
+  background: var(--maroon-soft-tint);
+  border: 1px solid var(--maroon-primary);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  color: var(--maroon-dark);
+  font-size: 1.05rem;
+  font-weight: 600;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.btn-calendar-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  color: var(--maroon-primary);
+  border: 1.5px solid var(--gold-border);
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-calendar-add:hover {
+  background: var(--maroon-soft-tint);
+  border-color: var(--maroon-primary);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ६. विवाह कार्यक्रम टाइमलाइन (Wedding Events Schedule)
+   ========================================================================== */
+
+.events-section {
+  position: relative;
+}
+
+.events-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.event-day-group {
+  margin-bottom: 10px;
+}
+
+.event-day-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--maroon-primary);
+  color: #FFFDF9;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.event-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.event-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: all 0.25s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold-rich);
+}
+
+.event-card-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--maroon-soft-tint);
+  border: 1px solid var(--gold-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--maroon-primary);
+}
+
+.event-card-body {
+  flex: 1;
+}
+
+.event-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--maroon-dark);
+  margin-bottom: 4px;
+}
+
+.event-card-time {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--maroon-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 4px;
+}
+
+.event-card-venue {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.event-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.palki-banner {
+  text-align: center;
+  margin: 32px auto 0;
+}
+
+.palki-banner img {
+  max-width: 380px;
+  width: 85%;
+  height: auto;
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   ७. रात्रिभोज (Dinner Section)
+   ========================================================================== */
+
+.dinner-section {
+  background: var(--maroon-soft-tint);
+  border-top: 1px solid rgba(133, 19, 41, 0.12);
+  border-bottom: 1px solid rgba(133, 19, 41, 0.12);
+  text-align: center;
+}
+
+.dinner-card {
+  background: #FFFFFF;
+  border: 2px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.dinner-elephants-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 10px;
+}
+
+.dinner-elephant-img {
+  width: 50px;
+  height: auto;
+  opacity: 0.85;
+}
+
+.dinner-badge {
+  display: inline-block;
+  background: var(--maroon-soft-tint);
+  color: var(--maroon-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(133, 19, 41, 0.2);
+  margin-bottom: 10px;
+}
+
+.dinner-heading {
+  font-family: var(--font-heading);
+  color: var(--maroon-dark);
+  font-size: 2.1rem;
+  margin-bottom: 8px;
+}
+
+.dinner-time-box {
+  background: var(--bg-ivory);
+  border: 1px dashed var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  margin: 18px auto;
+  max-width: 420px;
+}
+
+.dinner-time-highlight {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--maroon-primary);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.dinner-date-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.dinner-venue-lead {
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-top: 14px;
+  font-weight: 600;
+}
+
+.dinner-address-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.dinner-warm-welcome {
+  font-size: 0.88rem;
+  color: var(--gold-primary);
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+/* ==========================================================================
+   ८. कार्यक्रम स्थल व गूगल मैप्स (Venue & Maps Section)
+   ========================================================================== */
+
+.venue-section {
+  text-align: center;
+}
+
+.venue-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  max-width: 720px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.venue-name {
+  font-family: var(--font-heading);
+  color: var(--maroon-dark);
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.venue-address {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.map-wrapper {
+  width: 100%;
+  height: 280px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1.5px solid var(--gold-border);
+  margin-bottom: 20px;
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.btn-maps-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #9E1C36 0%, #7A1125 100%);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 13px 32px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s ease;
+  border: 1px solid var(--gold-border);
+}
+
+.btn-maps-action:hover {
+  background: linear-gradient(135deg, #B02340 0%, #851329 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.baraat-notice-box {
+  background: var(--maroon-soft-tint);
+  border: 1px solid rgba(133, 19, 41, 0.2);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  max-width: 680px;
+  margin: 24px auto 0;
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--maroon-dark);
+}
+
+/* ==========================================================================
+   ९. अतिथि का नाम बदलने व निमंत्रण लिंक बनाने का टूल
+   ========================================================================== */
+
+.guest-tool-section {
+  background: var(--bg-ivory);
+  border-top: 1px solid rgba(184, 134, 11, 0.15);
+  border-bottom: 1px solid rgba(184, 134, 11, 0.15);
+}
+
+.guest-tool-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  padding: 30px 24px;
+  max-width: 620px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.tool-instructions {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.guest-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.guest-name-input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1.5px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-dark);
+  background: #FFFDF9;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guest-name-input:focus {
+  border-color: var(--maroon-primary);
+  box-shadow: 0 0 0 3px rgba(133, 19, 41, 0.1);
+}
+
+.btn-generate-link {
+  background: var(--maroon-primary);
+  color: #FFFFFF;
+  border: none;
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-generate-link:hover {
+  background: var(--maroon-dark);
+  transform: translateY(-1px);
+}
+
+/* परिणाम लिंक बॉक्स */
+.generated-link-box {
+  display: none;
+  margin-top: 20px;
+  background: var(--bg-cream-soft);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: left;
+}
+
+.generated-link-box.active {
+  display: block;
+}
+
+.generated-url-text {
+  font-size: 0.88rem;
+  color: var(--maroon-dark);
+  word-break: break-all;
+  background: #FFFFFF;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
+  font-family: monospace;
+}
+
+.link-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-copy-link {
+  flex: 1;
+  min-width: 140px;
+  background: #FFFFFF;
+  color: var(--maroon-primary);
+  border: 1.5px solid var(--maroon-primary);
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-link:hover {
+  background: var(--maroon-primary);
+  color: #FFFFFF;
+}
+
+.btn-whatsapp-share {
+  flex: 1;
+  min-width: 160px;
+  background: #25D366;
+  color: #FFFFFF;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-whatsapp-share:hover {
+  background: #20BA5A;
+  transform: translateY(-1px);
+}
+
+.copy-success-toast {
+  display: none;
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   १०. परिवार, निवेदक एवं बाल मनुहार (Family & Blessings Section)
+   ========================================================================== */
+
+.family-section {
+  text-align: center;
+}
+
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 760px;
+  margin: 0 auto 30px;
+  text-align: left;
+}
+
+.family-card {
+  background: #FFFFFF;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.family-card-title {
+  font-family: var(--font-heading);
+  color: var(--maroon-primary);
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed var(--gold-border);
+  padding-bottom: 4px;
+}
+
+.family-names-list {
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.family-names-list li {
+  margin-bottom: 3px;
+}
+
+.snehakankshi-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.sneh-tag {
+  background: var(--maroon-soft-tint);
+  color: var(--maroon-primary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(133, 19, 41, 0.15);
+}
+
+/* बाल मनुहार विशेष कार्ड */
+.bal-manuhar-card {
+  background: #FFFDF9;
+  border: 2px dashed var(--gold-rich);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.bal-manuhar-tag {
+  display: inline-block;
+  background: var(--maroon-primary);
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 3px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 8px;
+}
+
+.bal-manuhar-poem {
+  font-family: var(--font-shloka);
+  color: var(--maroon-dark);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.phere-illustration-wrap {
+  margin: 24px auto 0;
+  max-width: 280px;
+}
+
+.phere-illustration-wrap img {
+  width: 100%;
+  height: auto;
+  opacity: 0.88;
+}
+
+/* ==========================================================================
+   ११. पादलेख (Footer)
+   ========================================================================== */
+
+footer {
+  background: var(--maroon-dark);
+  color: #FFFDF9;
+  text-align: center;
+  padding: 36px 20px;
+  border-top: 3px solid var(--gold-border);
+}
+
+.footer-couple-name {
+  font-family: var(--font-heading);
+  color: var(--gold-light);
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  color: rgba(255, 253, 249, 0.8);
+  margin-bottom: 12px;
+}
+
+.footer-contact {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.88rem;
+  color: var(--gold-light);
+}
+
+.footer-contact a {
+  color: var(--gold-light);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-contact a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom-line {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ==========================================================================
+   १२. पंखुड़ी वर्षा एनीमेशन (Petals Rain Effect)
+   ========================================================================== */
+
+#petalsContainer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -30px;
+  pointer-events: none;
+  animation: petalFall linear forwards;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(40px);
+    opacity: 0;
+  }
+}
